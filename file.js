@@ -150,3 +150,22 @@ file.readAllText = function(path){
 	});
 	return def.promise;
 }
+
+/**
+ * 根据路径创建一个writeStream
+ * @param  {String} path 目标写入路径
+ * @return {Stream}      writeable stream
+ */
+file.write = function(path){
+	return fs.createWriteStream(path);
+}
+
+/**
+ * 写入text到指定路径
+ * @param  {String} path 路径
+ * @param  {String} text 文本
+ * @return {Q.Promise}      
+ */
+file.writeAllText = function(path, text){
+	return Q.nfcall(fs.writeFile, path, text);
+}
