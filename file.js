@@ -14,7 +14,7 @@ var file = module.exports = {};
 file.copy = function(src, dest, isOverride){
 	var def = Q.defer();
 	fs.exists(dest, function(isExists){
-		if(isExists){ 
+		if(isExists && !isOverride){ 
 			def.resolve();
 		}else{
 			ncp(src, dest, function(err){
@@ -35,7 +35,13 @@ file.copy = function(src, dest, isOverride){
  * @return {Q.promise}
  */
 file.delete = function(path){
-	return Q.nfcall(fs.unlink, path);
+	return file.isExists(path).then(function(exists){
+		if(exists){
+			return Q.nfcall(fs.unlink, path);
+		}else{
+			return;
+		}
+	});
 }
 
 /**
@@ -46,7 +52,7 @@ file.delete = function(path){
 file.isExists = function(path){
 	var def = Q.defer();
 	fs.exists(path, function(isExists){
-		isExists ? def.resolve(): def.reject();
+		def.resolve(isExists);
 	});
 	return def.promise;
 }

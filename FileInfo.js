@@ -3,6 +3,10 @@ var file = require("./file"),
 	path = require("path");
 
 var FileInfo = module.exports = function(filePath){
+	if(!filePath){
+		throw new Error("filePath not specify.");
+		return;
+	}
 	var that = this,
 		_stats;
 
