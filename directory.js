@@ -12,7 +12,7 @@ var directory = module.exports = {};
  * @return {Q.Promise}
  */
 directory.createDirectory = function(path){
-	return Q.nfcall(fs.mkdir, path);
+	return Q.nfcall(fsExtra.mkdirs, path);
 }
 
 /**
@@ -37,7 +37,7 @@ directory.delete = function(path, recursive){
 directory.isExists = function(path){
 	var def = Q.defer();
 	fs.exists(path, function(exists){
-		exists ? def.resolve() : def.reject();
+		def.resolve(exists);
 	});
 	return def.promise;
 }
@@ -66,7 +66,7 @@ directory.isDirectory = function(path){
 		if(err){
 			def.reject(err);
 		} else {
-			stats.isDirectory() ? def.resolve(path) : def.reject();
+			def.resolve(stats.isDirectory());
 		}
 	});
 	return def.promise;
@@ -94,7 +94,7 @@ directory.getDirectories  = function(path, pattern){
 				var realPath = require('path').resolve(path, filePath);
 				directory.isDirectory(realPath)
 					.then(function(dict){
-						def.resolve(dict);
+						def.resolve(realPath);
 					}, function(){
 						def.reject();
 					});

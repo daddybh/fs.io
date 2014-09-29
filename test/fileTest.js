@@ -98,6 +98,9 @@ describe("file.read", function(){
 	before(function(done){
 		file.writeAllText("tmp/read.txt","hihi").then(done);
 	});
+	after(function(done){
+		file.delete("tmp/read.txt").then(done);
+	})
 	it("should return valid stream", function(done){
 		var tmpResutl = "";
 		file.read("tmp/read.txt").on("data", function(str){
@@ -118,6 +121,9 @@ describe("file.readAllText", function(){
 	before(function(done){
 		file.writeAllText("tmp/readAllText.txt","hihi").then(done);
 	});
+	after(function(done){
+		file.delete("tmp/readAllText.txt").then(done);
+	})
 	it("should not be empty and promised fulfilled", function(done){
 		file.readAllText("tmp/readAllText.txt")
 			.should.eventually.be.fulfilled.and.not.be.empty.and.notify(done);
@@ -131,8 +137,8 @@ describe("file.readAllText", function(){
 
 describe("file.write", function(){
 
-	after(function(){
-		file.delete("tmp/ooxx.txt");
+	after(function(done){
+		file.delete("tmp/ooxx.txt").then(done);
 	})
 	it("should create write stream", function(){
 		assert.instanceOf(file.write("tmp/ooxx.txt"),require('stream').Writable, "created stream.Wriable object");
@@ -140,8 +146,8 @@ describe("file.write", function(){
 });
 
 describe("file.writeAllText", function(){
-	after(function(){
-		file.delete("tmp/write.txt");
+	after(function(done){
+		file.delete("tmp/write.txt").then(done);
 	})
 	it("should write all text to file", function(done){
 		file.writeAllText("tmp/write.txt","hello world")
