@@ -147,8 +147,15 @@ describe("file.write", function(){
 
 describe("file.writeAllText", function(){
 	after(function(done){
-		file.delete("tmp/write.txt").then(done);
-	})
+		dir.delete("tmp/write/", true)
+			.then(file.delete("tmp/write.txt"))
+			.then(done);
+	});
+	before(function(done){
+		dir.createDirectory("tmp/write").then(function(){
+			done();
+		});
+	});
 	it("should write all text to file", function(done){
 		file.writeAllText("tmp/write.txt","hello world")
 			.should.eventually.be.fulfilled.and.notify(function(){
@@ -156,4 +163,16 @@ describe("file.writeAllText", function(){
 					.should.eventually.be.fulfilled.and.not.be.empty.and.notify(done);
 			});
 	});
+	it("can write file in same path mutiple times", function(done){
+		file.writeAllText("tmp/write/aaa.txt","hello")
+			.then(file.writeAllText("tmp/write/bbb.txt","hello"))
+			.then(file.writeAllText("tmp/write/ccc.txt","hello"))
+			.then(file.writeAllText("tmp/write/ddd.txt","hello"))
+			.then(file.writeAllText("tmp/write/eee.txt","hello"))
+			.then(file.writeAllText("tmp/write/fff.txt","hello"))
+			.then(file.writeAllText("tmp/write/ggg.txt","hello"))
+			.then(file.writeAllText("tmp/write/hhh.txt","hello"))
+			.then(file.writeAllText("tmp/write/iii.txt","hello"))
+			.should.eventually.be.fulfilled.and.notify(done);
+	})
 })

@@ -148,8 +148,10 @@ describe("directory.getDirectories", function(){
 	before(function(done){
 
 		dict.createDirectory("tmp/leverdir/level/lever3")
-			.then(dict.createDirectory("tmp/leverdir/abcd"))
-			.then(function(){done();}, function(err){
+			.then(function(){ return dict.createDirectory("tmp/leverdir/abcd");})
+			.then(function(){
+					done();
+				}, function(err){
 				console.log(err);
 			});
 	});
@@ -157,7 +159,7 @@ describe("directory.getDirectories", function(){
 	after(function(done){
 		dict.delete("tmp/leverdir", true)
 			.then(done);
-	})
+	});
 
 	it("should return two folder", function(done){
 		dict.getDirectories("tmp/leverdir")
@@ -172,13 +174,14 @@ describe("directory.getDirectories", function(){
 
 describe("directory.getFiles", function(){
 	before(function(done){
-		dict.createDirectory("tmp/getFiles/")
-			.then(file.writeAllText("tmp/getFiles/abc.txt","aaa"),error)
+		require('fs').mkdir("tmp/getFiles/",function(){
+			file.writeAllText("tmp/getFiles/abc.txt","aaa")
 			.then(file.writeAllText("tmp/getFiles/abd.txt","aaa"),error)
 			.then(file.writeAllText("tmp/getFiles/acc.txt","aaa"),error)
 			.then(function(){
 				done();
 			},error);
+		});
 	});
 
 	function error(err){
