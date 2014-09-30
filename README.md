@@ -85,6 +85,10 @@ promise在done函数从参数返回是否存在
 *path* 文件路径
 *text* 写入文件内容
 
+#### file.appendText(path, text) ####
+
+往文件结尾写入文本，如果文件不存在，则创建文件
+
 ## directory ##
 
 ####  directory.createDirectory(path) ####

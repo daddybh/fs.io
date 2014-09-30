@@ -175,3 +175,13 @@ file.write = function(path){
 file.writeAllText = function(path, text){
 	return Q.nfcall(fs.writeFile, path, text);
 }
+
+/**
+ * append text to the end of the file.
+ * @param  {String} path file location
+ * @param  {String} text to append
+ * @return {Q.Promise}
+ */
+file.appendText = function(path, text){
+	return Q.nfcall(fs.appendFile, path, text);
+}

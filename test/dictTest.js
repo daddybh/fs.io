@@ -174,14 +174,15 @@ describe("directory.getDirectories", function(){
 
 describe("directory.getFiles", function(){
 	before(function(done){
-		require('fs').mkdir("tmp/getFiles/",function(){
-			file.writeAllText("tmp/getFiles/abc.txt","aaa")
-			.then(file.writeAllText("tmp/getFiles/abd.txt","aaa"),error)
-			.then(file.writeAllText("tmp/getFiles/acc.txt","aaa"),error)
-			.then(function(){
-				done();
-			},error);
-		});
+		dict.createDirectory("tmp/getFiles/")
+		.then(function(){ return dict.createDirectory("tmp/getFiles/ooxx/")})
+		.then(function() {return file.writeAllText("tmp/getFiles/ooxx/abd.txt","aaa"); },error)
+		.then(function(){ return file.writeAllText("tmp/getFiles/abc.txt","aaa")})
+		.then(function() {return file.writeAllText("tmp/getFiles/abd.txt","aaa"); },error)
+		.then(function() {return file.writeAllText("tmp/getFiles/acc.txt","aaa"); },error)
+		.then(function(){
+			done();
+		},error);
 	});
 
 	function error(err){
@@ -192,10 +193,14 @@ describe("directory.getFiles", function(){
 		dict.delete("tmp/getFiles", true)
 			.then(done);
 	});
-	it("should return three files", function(done){
+	it("should return four files", function(done){
 		dict.getFiles("tmp/getFiles","**/*.txt")
-			.should.eventually.be.fulfilled.and.be.length(3).and.notify(done);
+			.should.eventually.be.fulfilled.and.be.length(4).and.notify(done);
 	});
+	it("should return only three files", function(done){
+		dict.getFiles("tmp/getFiles","*.txt")
+			.should.eventually.be.fulfilled.and.be.length(3).and.notify(done);
+	})
 });
 
 describe("directory.getCurrentDirecotry", function(){

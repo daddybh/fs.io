@@ -20,9 +20,20 @@ var FileInfo = module.exports = function(filePath){
 			if(that.isStatReady){
 				return _stats;
 			}else{
-				_stats = fs.statSync(this.fullName);
-				that.isStatReady = true;
-				return _stats;
+				try{
+					_stats = fs.statSync(this.fullName);
+					that.isStatReady = true;
+					return _stats;
+				}catch(err){
+					if(err.code === "ENOENT"){//swallow file not found exception.
+						_stats = {};
+						that.isStatReady = true;
+						return _stats;
+					}else{
+						throw err;
+					}
+				}
+				
 			}
 		}
 	});
@@ -46,7 +57,7 @@ var FileInfo = module.exports = function(filePath){
  * @return {Q.promise}
  */
 FileInfo.prototype.isExists = function(){
-	return file.isExists(this.path);
+	return file.isExists(this.fullName);
 }
 
 /**
@@ -89,6 +100,24 @@ FileInfo.prototype.openText = function(){
  */
 FileInfo.prototype.openWrite = function(){
 	return file.write(this.fullName);
+}
+/**
+ * write text to the file
+ * this will override the original file content
+ * @param  {String} text
+ * @return {Q.Promise}
+ */
+FileInfo.prototype.writeAllText = function(text){
+	return file.writeAllText(this.fullName, text);
+}
+
+/**
+ * append text to the end
+ * @param  {String} text
+ * @return {Q.Promise}
+ */
+FileInfo.prototype.appendText = function(text){
+	return file.appendText(this.fullName, text);
 }
 
 /**

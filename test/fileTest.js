@@ -138,7 +138,7 @@ describe("file.readAllText", function(){
 describe("file.write", function(){
 
 	after(function(done){
-		file.delete("tmp/ooxx.txt").then(done);
+		file.delete("tmp/ooxx.txt").then(file.delete('tmp/haha.txt')).then(done);
 	})
 	it("should create write stream", function(){
 		assert.instanceOf(file.write("tmp/ooxx.txt"),require('stream').Writable, "created stream.Wriable object");
@@ -175,4 +175,18 @@ describe("file.writeAllText", function(){
 			.then(file.writeAllText("tmp/write/iii.txt","hello"))
 			.should.eventually.be.fulfilled.and.notify(done);
 	})
-})
+});
+
+describe("file.appendText", function(){
+	it("should be ok if file not exists", function(done){
+		file.appendText("tmp/haha.txt","ddd")
+			.should.eventually.be.fulfilled.and.notify(done);
+	});
+	it("should append file success", function(done){
+		file.appendText("tmp/haha.txt", "ddd")
+			.should.eventually.be.fulfilled.and.notify(function(){
+				file.readAllText("tmp/haha.txt")
+					.should.eventually.be.fulfilled.and.be.equal("dddddd").and.notify(done);
+			})
+	})
+});
