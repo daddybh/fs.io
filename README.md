@@ -71,7 +71,7 @@ promise在done函数从参数返回是否存在
 **注意**
 该函数返回值Stream.Readable对象
 
-#### file.readAllText(path) #### 
+#### file.readAllText(path)  #### 
 
 读取文件的所有内容
 
@@ -138,6 +138,32 @@ path 可为相对路径或绝对路径
 	directory.getFiles("path","*.js");//返回根目录的js文件
 	directory.getFiles("path","**/*.js");//返会目录下的所有js文件
 ```
+
+## FileInfo ##
+
+FileInfo 包含以下属性
+
+* `fullName` 文件路径
+* `name` 文件名
+* `extension` 文件扩展名
+* `directoryName` 目录名
+* `isStatReady` stats通过异步获取，此属性标示stats是否请求完毕
+* `createTime` 文件创建时间
+* `lastAccessTime` 文件最后访问时间
+* `lastModifyTime` 文件修改时间
+* `length` 文件大小
+
+类函数
+
+* `isExists()` 文件是否存在
+* `copyTo(destPath)` 文件拷贝
+* `moveTo(destPath)` 文件转移
+* `openRead()` 以Readable流形式打开
+* `openText()` 读取文件内容
+* `openWrite()` 以Writeable流形式打开
+* `writeAllText(text)` 写入文本
+* `appendText(text)` 附加文本
+* `delete()` 文件删除 
 
 
 
