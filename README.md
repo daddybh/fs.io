@@ -71,7 +71,7 @@ promise在done函数从参数返回是否存在
 **注意**
 该函数返回值Stream.Readable对象
 
-#### file.readAllText(path)  #### 
+#### file.readAllText(path) #### 
 
 读取文件的所有内容
 

@@ -1,13 +1,13 @@
 {
-  "name": "file.io",
+  "name": "fs.io",
   "version": "1.0.0",
-  "description": "file.io for nodejs",
-  "main": "index.js",
+  "description": "fs.io for nodejs",
+  "main": "fs.io.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "test/"
   },
   "keywords": [
-    "file",
+    "fs.io",
     "io"
   ],
   "author": "Chris Cheung",
